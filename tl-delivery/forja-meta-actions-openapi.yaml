@@ -1,0 +1,190 @@
+openapi: 3.1.0
+info:
+  title: FORJA Meta MCP LAB - GPT Actions
+  description: Endpoints LAB/fake para GPT Actions. Nenhuma chamada à Meta API real. Sem OAuth, tokens ou secrets.
+  version: 1.1.0-lab
+servers:
+  - url: https://mcp.tlmarketingdigital.com.br
+paths:
+  /gpt-actions/ad-accounts:
+    get:
+      operationId: listAdAccounts
+      summary: Lista contas de anúncio LAB
+      description: Retorna contas de anúncio fake/LAB.
+      responses:
+        '200':
+          description: Contas de anúncio LAB
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lab_mode:
+                    type: boolean
+                  warning:
+                    type: string
+                  ad_accounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        currency:
+                          type: string
+                        status:
+                          type: string
+                        spend_cap:
+                          type: number
+                        balance:
+                          type: number
+  /gpt-actions/campaigns:
+    get:
+      operationId: listCampaigns
+      summary: Lista campanhas LAB
+      description: Retorna campanhas fake/LAB.
+      responses:
+        '200':
+          description: Campanhas LAB
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lab_mode:
+                    type: boolean
+                  warning:
+                    type: string
+                  campaigns:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        account_id:
+                          type: string
+                        name:
+                          type: string
+                        objective:
+                          type: string
+                        status:
+                          type: string
+                        daily_budget:
+                          type: number
+  /gpt-actions/adsets:
+    get:
+      operationId: listAdSets
+      summary: Lista conjuntos de anúncios LAB
+      description: Retorna adsets fake/LAB.
+      responses:
+        '200':
+          description: Adsets LAB
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lab_mode:
+                    type: boolean
+                  warning:
+                    type: string
+                  adsets:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        campaign_id:
+                          type: string
+                        name:
+                          type: string
+                        status:
+                          type: string
+                        daily_budget:
+                          type: number
+  /gpt-actions/ads:
+    get:
+      operationId: listAds
+      summary: Lista anúncios LAB
+      description: Retorna anúncios fake/LAB.
+      responses:
+        '200':
+          description: Ads LAB
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lab_mode:
+                    type: boolean
+                  warning:
+                    type: string
+                  ads:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        adset_id:
+                          type: string
+                        name:
+                          type: string
+                        status:
+                          type: string
+                        creative:
+                          type: string
+  /gpt-actions/campaigns/dry-run:
+    post:
+      operationId: dryRunCreateCampaign
+      summary: Simula criação de campanha LAB
+      description: Simula criação de campanha. Exige dry_run=true. Não cria nada real.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - dry_run
+                - name
+              properties:
+                dry_run:
+                  type: boolean
+                  const: true
+                name:
+                  type: string
+                objective:
+                  type: string
+                daily_budget:
+                  type: number
+      responses:
+        '200':
+          description: Simulação aceita
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lab_mode:
+                    type: boolean
+                  status:
+                    type: string
+                    example: SIMULATED
+                  message:
+                    type: string
+        '403':
+          description: Bloqueado sem dry_run=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  blocked:
+                    type: boolean
